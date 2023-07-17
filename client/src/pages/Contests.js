@@ -4,6 +4,14 @@ import axios from 'axios';
 
 const ContestList = () => {
     const [contests, setContests] = useState({ upcoming: [], past: [] });
+
+    const auth = ()=>{
+      const token = localStorage.getItem('token')
+      if(!token){
+        window.location.href = '/'
+        alert("Access denied!")
+      }
+    }
   
 
   useEffect(() => {
@@ -21,6 +29,7 @@ const ContestList = () => {
 
   return (
     <div>
+      {auth()}
         <Header/>
       <h1 className='text-center'>Upcoming Contests</h1>
       <ul>

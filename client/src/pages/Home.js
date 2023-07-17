@@ -14,8 +14,16 @@ function Home() {
     navigate('/problem')
   }
   
+  const auth = ()=>{
+    const token = localStorage.getItem('token')
+    if(token)
+    {
+      window.location.href = '/home'
+      }
+  }
   return (
     <div className="Home">
+      {auth()}
     <Header/>
 
 

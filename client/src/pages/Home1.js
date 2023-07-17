@@ -2,7 +2,7 @@ import React from 'react';
 import './Home.css';
 import Header from '../components/header';
 import Footer from '../components/footer';
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 
 
 function Home() {
@@ -13,12 +13,22 @@ function Home() {
   const goToProblems=() =>{
     navigate('/problem')
   }
+
+  const auth = ()=>{
+    console.log("start")
+    const token = localStorage.getItem('token')
+    console.log(token)
+    if(!token){
+      window.location.href = '/'
+      alert("Access denied!")
+    }
+  }
   
   return (
+   <div>
+   {auth()}
     <div className="Home">
     <Header/>
-
-
 <section class="text-gray-600 body-font">
   <div class="container mx-auto flex px-5 pt-12 md:flex-row flex-col items-center ">
     <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center ">
@@ -67,6 +77,7 @@ function Home() {
         </div>
         <Footer/>
       
+    </div>
     </div>
   );
 }

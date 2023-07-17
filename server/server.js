@@ -30,6 +30,8 @@ if (process.env.NODE_ENV !== 'production') {
   // app.use(bodyParser.urlencoded({ extended: false}))
   // app.use(bodyParser.json());
   app.use(flash())
+
+  
   
   app.get('/',  (req, res) => {
    
@@ -39,14 +41,37 @@ if (process.env.NODE_ENV !== 'production') {
     
   })
 
-  app.get('/home') , (req,res) =>{
+  // const verifyToken = (req, res, next) => {
+  //   const token = req.headers.authorization; // Get the JWT from the request header
+  
+  //   // Check if the token exists
+  //   if (!token) {
+  //     return res.status(401).json({ message: "Token not found" });
+  //   }
+  
+  //   try {
+  //     // Verify and decode the token using the secret key
+  //     const decoded = jwt.verify(token, "secret123");
+  
+  //     // Add the decoded user data to the request object for further use
+  //     req.user = decoded;
+  
+  //     // Proceed to the next middleware or route
+  //     next();
+  //   } catch (error) {
+  //     return res.status(401).json({ message: "Invalid token" });
+  //   }
+  // };
 
-  }
+  app.get('/home', (req,res) =>{
+
+  })
+
   
   // app.get('/register', checkNotAuthenticated, (req, res) => {
   //   res.render('register.ejs')
   // })
-  app.get('/problem', async (req, res) => {
+  app.get('/problem' , async (req, res) => {
     try {
       const response = await axios.get('https://codeforces.com/api/problemset.problems?div2=true');
       const problems = response.data.result.problems;
@@ -57,7 +82,7 @@ if (process.env.NODE_ENV !== 'production') {
     }
   });
 
-  app.get('/contests', async (req, res) => {
+  app.get('/contests',  async (req, res) => {
     try {
       const response = await axios.get('https://codeforces.com/api/contest.list');
       const contests = response.data.result;
@@ -89,21 +114,27 @@ if (process.env.NODE_ENV !== 'production') {
   app.post('/login', async(req,res)=>{
     const user = await User.findOne({
       email:req.body.email,
-      password:req.body.password
+      // password:req.body.password
     })
     if(user){
-      
-      const token = jwt.sign({
-        username : user.username ,
-        email: user.email
-      },"secret123")
-      console.log(token)
+      const passCheck = await bcrypt.compare(req.body.password,user.password);
+      if(passCheck===true)
+      {
+        const token = jwt.sign({
+          username : user.username ,
+          email: user.email
+        },"secret123")
+        console.log(token)
+  
+        res.json({ token });
+      }
+      else {
+        res.status(401).json({ message: 'Incorrect password' });
+      }
+    }
+    else{
+      res.status(401).json({ message: 'User doesn`t exists' });
 
-      res.json({ token });
-    } else {
-      res.status(401).json({ message: 'Invalid credentials' });
-      
-      
     }
     
   })
@@ -112,7 +143,7 @@ if (process.env.NODE_ENV !== 'production') {
   
   app.post('/register', async (req, res) => {
     const em = await User.findOne({email : req.body.email})
-    console.log(em)
+    
     if(em===null){
       try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
@@ -166,6 +197,8 @@ app.post('/feedback', async(req, res) =>{
     const { token } = req.body;
      res.redirect('/')
   })
+
+  
   
   
   app.listen(5000)

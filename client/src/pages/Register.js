@@ -48,8 +48,17 @@ export default function Registration() {
     
 }
 
+const auth = ()=>{
+    const token = localStorage.getItem('token')
+    if(token)
+    {
+      window.location.href = '/home'
+      }
+  }
+
     return (
         <div>
+            {auth()}
             <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-50">
                 <div>
                     
@@ -94,7 +103,7 @@ export default function Registration() {
                                     onChange ={(event)=>setEmail(event.target.value)}
                                     className="block w-full mt-1 border-black-500 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     required 
-                                    unique
+                                    
                                 />
                             </div>
                         </div>

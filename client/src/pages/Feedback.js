@@ -8,6 +8,16 @@ import { useState } from 'react';
 
 function Feedback() {
   const [message,setMessage] = useState('')
+
+  const auth = ()=>{
+    
+    const token = localStorage.getItem('token')
+    
+    if(!token){
+      window.location.href = '/'
+      alert("Access denied!")
+    }
+  }
  
 
   const handleFeedback = async(event)=>{
@@ -35,6 +45,7 @@ function Feedback() {
   
     return (
       <div>
+        {auth()}
       <Header/>
       <section className="text-gray-600 body-font relative">
       <div className="container px-5 py-10 mx-auto">

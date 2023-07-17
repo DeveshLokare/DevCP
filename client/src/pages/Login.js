@@ -17,6 +17,7 @@ export default function Login() {
             }).then((response)=>{
 
                 const token = response.data.token;
+                console.log(response)
         
                 localStorage.setItem('token', token);
         
@@ -33,9 +34,18 @@ export default function Login() {
           } 
     };
     
+    const auth = ()=>{
+        const token = localStorage.getItem('token')
+        if(token)
+        {
+          window.location.href = '/home'
+          }
+      }
    
 
     return (
+        <div>
+            {auth()}
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
             <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-purple-700 underline">
@@ -96,6 +106,7 @@ export default function Login() {
                     </a>
                 </p>
             </div>
+        </div>
         </div>
     );
 }

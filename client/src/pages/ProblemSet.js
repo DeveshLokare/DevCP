@@ -9,6 +9,16 @@ import axios from "axios"
 function ProblemSet(props){
     const [problems, setProblems] = useState([]);
 
+    const auth = async()=>{
+      console.log("start")
+      const token = await localStorage.getItem('token')
+      console.log(token)
+      if(!token){
+        window.location.href = '/'
+        alert("Access denied!")
+      }
+    }
+
     useEffect(() => {
       const fetchProblems = async () => {
         try {
@@ -26,6 +36,7 @@ function ProblemSet(props){
     
   return (
     <div>
+      {auth()}
         <Header/>
       <h1 className='text-center'>Practice Problems</h1>
       <ul>
