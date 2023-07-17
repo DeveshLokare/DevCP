@@ -1,0 +1,10 @@
+.nav{
+    margin-right: 12px;
+    color:black;
+}
+.active{
+    color:blue;
+}
+img{
+    mix-blend-mode:color-burn;
+}

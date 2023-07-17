@@ -1,0 +1,8 @@
+.nav{
+    margin-right: 12px;
+    color:black;
+}
+.active{
+    color:grey;
+    text-decoration: underline;
+}
