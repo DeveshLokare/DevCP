@@ -2,12 +2,12 @@
 
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const passportLocalMongoose = require('passport-local-mongoose');
+// const passportLocalMongoose = require('passport-local-mongoose');
 var User = new Schema({
 	email: {
 		type: String,
 		required : [true , "Please enter your email"],
-		unique: true
+		unique : [true, "Email already taken"]
 		
 		
 	},
@@ -26,6 +26,6 @@ var User = new Schema({
 }
 )
 
-User.plugin(passportLocalMongoose);
+// User.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User', User)

@@ -11,6 +11,7 @@ export default function Registration() {
 
     const handleRegister= async(event) =>{
          event.preventDefault();
+    
         if(password1===password2){
             const password = password1
           try {
@@ -19,25 +20,33 @@ export default function Registration() {
                 username,
                 password
             })
-            .then((response) => {
+            .then(async(response) => {
                 const statusCode = response.status;
+                const msg = await  response.data.message;
                 console.log('Status code:', statusCode);
-            if(response.status===200)
-            {
-              Navigate('/login')
+            if(msg === false){
+                window.location.href = '/register'
+                alert("This email is already registered")
             }
             else{
-                alert("Problem in registering.Please try again")
+                if(response.status===200)
+                {
+                  Navigate('/login')
+                }
+                else{
+                    alert("Problem in registering.Please try again")
+                }
+                
             }
-         })
             
-          } catch (error) {} 
-        }
-        else{
-          alert("Passwords do not match.Please re-enter")
-        }
+        })
+        } catch (error) {} 
     }
-
+    else{
+        alert("Passwords do not match.Please re-enter")
+    }
+    
+}
 
     return (
         <div>
@@ -84,7 +93,8 @@ export default function Registration() {
                                     value={email}
                                     onChange ={(event)=>setEmail(event.target.value)}
                                     className="block w-full mt-1 border-black-500 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    required
+                                    required 
+                                    unique
                                 />
                             </div>
                         </div>

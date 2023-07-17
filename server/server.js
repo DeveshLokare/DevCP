@@ -111,18 +111,26 @@ if (process.env.NODE_ENV !== 'production') {
   
   
   app.post('/register', async (req, res) => {
-    try {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10)
-      const user = await User.create({
-        username: req.body.username,
-        email: req.body.email,
-        password:hashedPassword
-      })
-      res.json(user);
-      
-    } catch(error) {
-      console.log(error)
-      
+    const em = await User.findOne({email : req.body.email})
+    console.log(em)
+    if(em===null){
+      try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        const user = await User.create({
+          username: req.body.username,
+          email: req.body.email,
+          password:hashedPassword
+        })
+        res.json(user);
+        
+      } catch(error) {
+        console.log(error)
+        
+      }
+    }
+    else{
+      const message = false
+      res.json({message});
     }
   })
 
