@@ -1,49 +1,73 @@
-import React, { useEffect, useState } from 'react';
-import Header from '../components/header';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import './contest.css';
+import Header from '../components/header.js';
+import UserData1 from './UserData1';
 
-const ContestList = () => {
-    const [contests, setContests] = useState({ upcoming: [], past: [] });
-  
+const API = 'https://codeforces.com/api/contest.list?gym=false';
+
+const Contests = () => {
+  const [upcomingContests, setUpcomingContests] = useState([]);
+  const [pastContests, setPastContests] = useState([]);
 
   useEffect(() => {
-    const fetchContests = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/contests');
-        setContests(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    fetch(API)
+      .then((response) => response.json())
+      .then((json) => {
+        const contests = json.result;
+        const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
 
-    fetchContests();
+        const upcoming = contests.filter((contest) => contest.relativeTimeSeconds < 0);
+        const past = contests.filter((contest) => contest.relativeTimeSeconds > 0);
+
+        setUpcomingContests(upcoming);
+        setPastContests(past);
+      });
   }, []);
 
   return (
     <div>
-        <Header/>
-      <h1 className='text-center'>Upcoming Contests</h1>
-      <ul>
-        {contests.upcoming.map((contest) => (
-          <li key={contest.link}>
-            <a href={contest.link} target="_blank" rel="noopener noreferrer">
-              {contest.name}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <h1 className='text-center'>Past Contests</h1>
-      <ul>
-        {contests.past.map((contest) => (
-          <li key={contest.link}>
-            <a href={contest.link} target="_blank" rel="noopener noreferrer">
-              {contest.name}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <Header />
+      <div className="contest2">
+        <h1 className="cont">UPCOMING CONTESTS</h1>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>ContestsId</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Duration</th>
+                <th>Enter</th>
+              </tr>
+            </thead>
+            <tbody>
+            <UserData1 users={upcomingContests} isUpcomingContests={true} />
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="contest1">
+        <h1 className="cont">PAST CONTESTS</h1>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>ContestsId</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Duration</th>
+                <th>Enter</th>
+              </tr>
+            </thead>
+            <tbody>
+              <UserData1 users={pastContests} />
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default ContestList;
+export default Contests;
