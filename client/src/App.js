@@ -6,6 +6,7 @@ import Contests from './pages/Contests';
 import Feedback from './pages/Feedback';
 import Home1 from './pages/Home1';
 import PageNotFound from './pages/PageNotFound';
+import Profile from './pages/Profile';
 import './App.css';
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import React from 'react';
@@ -24,6 +25,7 @@ function App() {
             <Route path="/contests" element={<Contests/>}></Route>
             <Route path="/feedback" element={<Feedback/>}></Route>
             <Route path="/*" element={<PageNotFound/>}></Route>
+            <Route path = "/profile" element = {<Profile/>}></Route>
         </Routes>
         </BrowserRouter>
     );
