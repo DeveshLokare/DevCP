@@ -1,6 +1,7 @@
 import '../App';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+
 import "./footer.css"
 
 function footer(){
@@ -28,6 +29,7 @@ function footer(){
             
           </nav> 
         </div>
+       
         </footer>
     )
 }

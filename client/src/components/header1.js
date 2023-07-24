@@ -1,4 +1,4 @@
-import '../pages/Home';
+import '../pages/Dashboard';
 import '../App';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
@@ -7,9 +7,9 @@ import './header1.css';
 
 function Header1() {
     return(
-        <header className="text-gray-600 body-font">
+        <header className="text-gray-600 body-font ">
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center ">
-          <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+          <a className="flex title-font font-medium items-center text-gray-900 mb-3 md:mb-0">
           <img
           src="canva1.png"
           class="rounded-full h-28 w-28"

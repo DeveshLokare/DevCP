@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../components/header.js';
 import axios from "axios"
-import './Home1.js';
+import './Home.js';
 import { useState } from 'react';
 
 

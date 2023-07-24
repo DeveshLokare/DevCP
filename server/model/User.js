@@ -16,6 +16,11 @@ var User = new Schema({
 		required : [true , "Please enter a username"]
 		
 	},
+	handle: {
+		type: String,
+		
+		
+	},
 	password: {
 		type: String,
 		required : [true , "Please enter a password"]

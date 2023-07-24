@@ -1,4 +1,4 @@
-import '../pages/Home1';
+import '../pages/Home';
 import '../App';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
@@ -32,6 +32,7 @@ function Header() {
           <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
             <NavLink className="nav" to="/home">Home</NavLink>
             <NavLink className="nav" to="/problem" >Problem Set</NavLink>
+            <NavLink className="nav" to="/profile">Profile</NavLink>
             <NavLink className="nav" to="/contests">Contests</NavLink>
             <NavLink className="nav" to="/feedback">Feedback</NavLink>
           </nav>

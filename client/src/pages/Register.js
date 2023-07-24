@@ -5,19 +5,31 @@ import { useNavigate } from 'react-router-dom';
 export default function Registration() {
     const [username, setUsername ] = useState('')
     const [email, setEmail ] = useState('')
+    const [handle, setHandle ] = useState('')
     const [password1, setPassword1 ] = useState('')
     const [password2, setPassword2 ] = useState('')
+    const [isValidPassword, setIsValidPassword] = useState(true);
+
     const Navigate = useNavigate()
+
+    const handleChange = (event) => {
+        const { value } = event.target;
+        setPassword1(value);
+    
+        // Check if the password is at least 8 characters long
+        setIsValidPassword(value.length >= 8);
+      };
 
     const handleRegister= async(event) =>{
          event.preventDefault();
-    
+         if (isValidPassword) {
         if(password1===password2){
             const password = password1
           try {
             await axios.post("http://localhost:5000/register",{
                 email,
                 username,
+                handle,
                 password
             })
             .then(async(response) => {
@@ -47,6 +59,10 @@ export default function Registration() {
     }
     
 }
+else{
+    alert("invalid password")
+}
+    }
 
 const auth = ()=>{
     const token = localStorage.getItem('token')
@@ -55,6 +71,7 @@ const auth = ()=>{
       window.location.href = '/home'
       }
   }
+
 
     return (
         <div>
@@ -109,6 +126,26 @@ const auth = ()=>{
                         </div>
                         <div className="mt-4">
                             <label
+                                htmlFor="email"
+                                className="block text-sm font-medium text-gray-700 undefined"
+                            >
+                                Codeforces Handle
+                            </label>
+                            <div className="flex flex-col items-start">
+                                <input
+                                    type="text"
+                                    name="handle"
+                                    id="handle"
+                                    value={handle}
+                                    onChange ={(event)=>setHandle(event.target.value)}
+                                    className="block w-full mt-1 border-black-500 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                     
+                                    
+                                />
+                            </div>
+                        </div>
+                        <div className="mt-4">
+                            <label
                                 htmlFor="password"
                                 className="block text-sm font-medium text-gray-700 undefined"
                             >
@@ -117,10 +154,10 @@ const auth = ()=>{
                             <div className="flex flex-col items-start">
                                 <input
                                     type="password"
-                                    name="password1"
+                                    name="password"
                                     id="password1"
                                     value={password1}
-                                    onChange ={(event)=>setPassword1(event.target.value)}
+                                    onChange ={handleChange}
                                     className="block w-full mt-1 border-black-500 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     required
                                 />
@@ -150,10 +187,12 @@ const auth = ()=>{
                             <button
                                 type="submit"
                                 className="inline-flex items-center px-4 py-2 ml-4 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-900 border border-transparent rounded-md active:bg-gray-900 false"
+                                disabled={!isValidPassword}
                             >
                                 Register
                             </button>
                         </div>
+                            {!isValidPassword && <p className="text-red-500">Password must be at least 8 characters long.</p>}
                     </form>
                     <a
                                 className="text-sm text-gray-600 underline hover:text-gray-900"

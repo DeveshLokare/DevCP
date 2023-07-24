@@ -1,62 +1,45 @@
-import './Home.js';
+import React, { useEffect, useState } from "react";
 import Header from '../components/header.js';
-import React, { useEffect, useState } from 'react';
-import List from '../components/todolist.js';
-import axios from "axios"
-// import Fetch from '../components/fetchApi.js';
+import UserData from './UserData.js';
+import "./problem.css";
 
+const API = "https://codeforces.com/api/problemset.problems?tags=implementation";
 
-function ProblemSet(props){
-    const [problems, setProblems] = useState([]);
+const ProblemSet = () => {
+  const [users, setUsers] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
-    const auth = async()=>{
-      console.log("start")
-      const token = await localStorage.getItem('token')
-      console.log(token)
-      if(!token){
-        window.location.href = '/'
-        alert("Access denied!")
-      }
+  useEffect(() => {
+    fetch(API)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        setUsers(json.result.problems.map((problem) => ({ ...problem, isSelected: false })));
+      });
+  }, []);
+
+  const handleFavoriteClick = (ind) => {
+    const updatedUsers = [...users];
+    updatedUsers[ind].isSelected = !updatedUsers[ind].isSelected;
+    setUsers(updatedUsers);
+
+    if (updatedUsers[ind].isSelected) {
+      setFavorites([...favorites, updatedUsers[ind]]);
+    } else {
+      const updatedFavorites = favorites.filter((favorite) => favorite.contestId + favorite.index !== updatedUsers[ind].contestId + updatedUsers[ind].index);
+      setFavorites(updatedFavorites);
     }
+  };
 
-    useEffect(() => {
-      const fetchProblems = async () => {
-        try {
-          const response = await axios.get('http://localhost:5000/problem');
-          setProblems(response.data);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-  
-      fetchProblems();
-    }, []);
-  
-
-    
   return (
     <div>
-      {auth()}
-        <Header/>
-      <h1 className='text-center'>Practice Problems</h1>
-      <ul>
-        {problems.map((problem) => (
-          <li key={problem.contestId + problem.index}>
-          <a href={`https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`} target="_blank" rel="noopener noreferrer">
-            {problem.name}
-          </a>
-          {problem.rating}
-        </li>
-        ))}
-      </ul>
+      <Header />
+      <div>
+        <h1 className="hi">PROBLEMS:</h1>
+            <UserData users={users} handleClick={handleFavoriteClick} />
+      </div>
     </div>
-    
-      
   );
-
-        
-    
-}
-       
+};
 
 export default ProblemSet;
