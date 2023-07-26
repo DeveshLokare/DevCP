@@ -27,8 +27,9 @@ const Contests = () => {
   return (
     <div>
       <Header />
+
       <div className="contest2">
-        <h1 className="cont">UPCOMING CONTESTS</h1>
+        <h1 className="cont1">UPCOMING CONTESTS</h1>
         <div>
           <table>
             <thead>
@@ -48,7 +49,7 @@ const Contests = () => {
         </div>
       </div>
       <div className="contest1">
-        <h1 className="cont">PAST CONTESTS</h1>
+        <h1 className="cont2">PAST CONTESTS</h1>
         <div>
           <table>
             <thead>

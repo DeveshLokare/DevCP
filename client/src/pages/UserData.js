@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./UserData.css";
 
 const UserData = ({ users }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [minRating, setMinRating] = useState(0);
+  const [maxRating, setMaxRating] = useState(3600);
   const rowsPerPage = 90;
 
   const handleClick = (ind) => {
@@ -23,46 +25,68 @@ const UserData = ({ users }) => {
     setShowFavorites(!showFavorites);
   };
 
-  // Calculate the index of the first and last row for the current page
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = users.slice(indexOfFirstRow, indexOfLastRow);
+  // Filter users whose rating falls within the desired range
+  const filteredUsers = users.filter((user) => {
+    const { rating } = user;
+    return rating >= minRating && rating <= maxRating;
+  });
 
-  // Filter favorite rows
-  const favoriteRows = users.filter((user, index) => selectedRows.includes(index));
+  const pageCount = Math.ceil(filteredUsers.length / rowsPerPage);
+  const pages = Array.from({ length: pageCount }).map((_, index) => index + 1);
 
-  // Change the current page
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [minRating, maxRating, showFavorites]);
 
-  const renderRows = showFavorites ? favoriteRows : currentRows;
+  const renderRows = showFavorites ? filteredUsers.filter((_, index) => selectedRows.includes(index)) : filteredUsers;
 
   return (
     <>
-      <table>
+      <div className="toggle-favorites">
+        <button className="text-2xl bg-blue-700" onClick={handleShowFavorites}>
+          {showFavorites ? "Show All Problems" : "Show Favorite Problems"}
+        </button>
+      </div>
+      <div className="text-center py-12">
+        <label>Min Rating:</label>
+        <input className="border-2 border-black px-2 py-2 mx-2 rounded-lg"
+          type="number"
+          value={minRating}
+          onChange={(e) => setMinRating(parseInt(e.target.value))}
+        />
+        <label>Max Rating:</label>
+        <input className="border-2 border-black px-2 py-2 mx-2 rounded-lg"
+          type="number"
+          value={maxRating}
+          onChange={(e) => setMaxRating(parseInt(e.target.value))}
+        />
+      </div>
+      <table className="border-collapse w-full">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Rating</th>
-            <th>Favourite</th>
+            <th className="px-10 py-2 border-solid border-gray-300 font-bold bg-violet-700
+              text-white">ID</th>
+            <th className="px-10 py-2 border-solid border-gray-300 font-bold bg-violet-700
+              text-white">Name</th>
+            <th className="px-10 py-2 border-solid border-gray-300 font-bold bg-violet-700
+              text-white">Rating</th>
+            <th className="px-10 py-2 border-solid border-gray-300 font-bold bg-violet-700
+              text-white">Favourite</th>
           </tr>
         </thead>
         <tbody>
-          {renderRows.map((curUser, ind) => {
+          {renderRows.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).map((curUser, ind) => {
             const { contestId, index, name, rating } = curUser;
-            const userIndex = showFavorites ? selectedRows[ind] : indexOfFirstRow + ind;
+            const userIndex = filteredUsers.findIndex((user) => user === curUser);
             const isSelected = selectedRows.includes(userIndex);
 
             return (
               <tr
                 style={{ backgroundColor: isSelected ? "yellow" : "white" }}
                 key={contestId + index}
-                onClick={() => handleClick(userIndex)}
               >
-                <td>{contestId + index}</td>
-                <td>
+                <td className="px-10 py-2 border-solid border-gray-300">{contestId + index}</td>
+                <td className="px-10 py-2 border-solid border-gray-300">
                   <a
                     href={`https://codeforces.com/problemset/problem/${contestId}/${index}`}
                     target="_blank"
@@ -71,9 +95,9 @@ const UserData = ({ users }) => {
                     {name}
                   </a>
                 </td>
-                <td>{rating}</td>
-                <td>
-                  <div className="space">
+                <td className="px-10 py-2 border-solid border-gray-300">{rating}</td>
+                <td className="px-10 py-2 border-solid border-gray-300">
+                  <div className="text-center">
                     <button onClick={() => handleClick(userIndex)}>
                       <i className="fa-solid fa-square-check"></i>
                     </button>
@@ -84,24 +108,17 @@ const UserData = ({ users }) => {
           })}
         </tbody>
       </table>
-
-      {users.length > rowsPerPage && (
-        <div className="pagination-container">
+      {pageCount > 1 && (
+        <div className="flex justify-center items-center mt-20">
           <ul className="pagination">
-            {Array.from({ length: Math.ceil(users.length / rowsPerPage) }).map((_, index) => (
-              <li key={index} className={currentPage === index + 1 ? "active" : ""}>
-                <button onClick={() => paginate(index + 1)}>{index + 1}</button>
+            {pages.map((page) => (
+              <li key={page} className={currentPage === page ? "active" : ""}>
+                <button onClick={() => setCurrentPage(page)}>{page}</button>
               </li>
             ))}
           </ul>
         </div>
       )}
-
-      <div className="toggle-favorites">
-        <button onClick={handleShowFavorites}>
-          {showFavorites ? "Show All Problems" : "Show Favorite Problems"}
-        </button>
-      </div>
     </>
   );
 };

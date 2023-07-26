@@ -1,10 +1,10 @@
-import Home from './pages/Dashboard';
+import Dashboard from './pages/Dashboard';
 import ProblemSet from './pages/ProblemSet';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Contests from './pages/Contests';
 import Feedback from './pages/Feedback';
-import Home1 from './pages/Home';
+import Home from './pages/Home';
 import PageNotFound from './pages/PageNotFound';
 import Profile from './pages/Profile';
 import './App.css';
@@ -17,8 +17,8 @@ function App() {
     return( 
         <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Home1/>}></Route>
-            <Route path="/home" element={<Home1/>}></Route>
+            <Route path="/" element={<Dashboard/>}></Route>
+            <Route path="/home" element={<Home/>}></Route>
             <Route path="/register" element={<Register/>}></Route>
             <Route path="/login" element={<Login/>}></Route>
             <Route path="/problem" element={<ProblemSet/>}></Route>

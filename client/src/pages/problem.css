@@ -7,9 +7,7 @@
   font-family: 'Poppins', sans-serif;
 }
 
-html{
-  font-size: 62.5%;
-}
+
 
 table {
   margin: 5rem auto;
@@ -35,8 +33,8 @@ thead {
 th,
 td {
   border: 1px solid #443C68;
-  min-width: 30rem;
-  padding: 1.5rem;
+  max-width: 30rem;
+  padding: 0.5rem;
   line-height: 1.7;
 }
 

@@ -1,49 +1,4 @@
-.space{
-    text-align: center;
-}
-/*.pagination-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
- 
-}
 
-.pagination {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.pagination li {
-  margin: 0 5px;
-}
-
-.pagination button {
-  padding: 5px 10px;
-  background-color: #f0f0f0;
-  border: none;
-  cursor: pointer;
-}
-
-.pagination button:hover {
-  background-color: #ddd;
-}
-
-.pagination .active button {
-  background-color: #bbb;
-}
-
-.pagination button:focus {
-  outline: none;
-}*/
-/* userdata.css */
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
 
 th,
 td {
@@ -109,11 +64,17 @@ tr:hover {
 
 .toggle-favorites button {
   padding: 5px 10px;
-  background-color: #f0f0f0;
+  background-color: #ffffff;
   border: none;
   cursor: pointer;
+  color:black;
+  border: black;
 }
 
 .toggle-favorites button:hover {
-  background-color: #ddd;
+  background-color: #636da4;
+  color:white;
+}
+@media only screen and (max-width:500px){
+  
 }

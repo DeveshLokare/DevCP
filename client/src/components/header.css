@@ -1,8 +1,11 @@
 .nav{
-    margin-right: 12px;
+    margin-right: 23px;
     color:black;
+    font-size: 22px;
 }
 .active{
-    color:grey;
-    text-decoration: underline;
+    color:blue;
+}
+.but{
+    font-size: 18px;
 }

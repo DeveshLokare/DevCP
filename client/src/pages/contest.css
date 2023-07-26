@@ -1,6 +1,11 @@
-.cont{
+.cont1{
     font-size: 32px;
-    padding: 112px;
-    margin:12px;
-    
+    padding: 1.3rem;   
+    text-align: center;
+    margin-top: 45px;   
+}
+.cont2{
+    font-size: 32px;
+    padding: 1.3rem;   
+    text-align: center;   
 }
