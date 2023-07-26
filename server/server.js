@@ -49,41 +49,11 @@ if (process.env.NODE_ENV !== 'production') {
   
   
   app.get('/problem' , async (req, res) => {
-    try {
-      const response = await axios.get('https://codeforces.com/api/problemset.problems?div2=true');
-      const problems = response.data.result.problems;
-      res.json(problems);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
+    
   });
   
   app.get('/contests',  async (req, res) => {
-    try {
-      const response = await axios.get('https://codeforces.com/api/contest.list');
-      const contests = response.data.result;
-      
-      // Filter contests to get only upcoming ones
-      const upcomingContests = contests.filter((contest) => contest.phase === 'BEFORE');
-      const pastContests = contests.filter((contest) => contest.phase === 'FINISHED');
-      
-      const contestsWithLinks = contests.map((contest) => ({
-        name: contest.name,
-        link: `https://codeforces.com/contest/${contest.id}`,
-      }));
-      
-      const contestData = {
-        links: contestsWithLinks,
-        upcoming: upcomingContests,
-        past: pastContests,
-      };
-      
-      res.json(contestData);
-    } catch (error) {
-      console.error('Error fetching upcoming contests:', error.message);
-      res.status(500).json({ error: 'Internal server error' });
-    }
+    
   });
   
   
@@ -106,7 +76,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.post('/home',async(req,res)=>{
     try{
       const token = req.body.token
-      const decoded = await jwt.verify(token,"secret123")
+      const decoded = await jwt.verify(token,process.env.SECRET_KEY)
       const name = decoded.username
       res.json({ name })
 
@@ -128,18 +98,19 @@ if (process.env.NODE_ENV !== 'production') {
           username : user.username ,
           handle : user.handle ,
           email: user.email
-        },"secret123")
+        },process.env.SECRET_KEY)
         console.log(token)
   
         res.json({ token });
       }
       else {
         res.status(401).json({ message: 'Incorrect password' });
+        console.log("error")
       }
     }
     else{
       res.status(401).json({ message: 'User doesn`t exists' });
-
+       console.log('error1')
     }
     
   })
@@ -178,7 +149,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.post('/feedback', async(req, res) =>{
 	try {
     const token = req.body.token
-    const decoded = await jwt.verify(token,"secret123")
+    const decoded = await jwt.verify(token,process.env.SECRET_KEY)
     const name = decoded.username
     const email = decoded.email
 		const feedback = await Feedback.create({
